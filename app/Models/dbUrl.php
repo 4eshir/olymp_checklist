@@ -15,6 +15,7 @@ class dbUrl extends Model
     protected $fillable = [
         'raw',
         'municipality_id',
+        'subject_id',
         'school_id',
         'state',
     ];
