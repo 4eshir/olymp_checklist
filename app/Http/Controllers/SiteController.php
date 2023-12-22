@@ -17,16 +17,18 @@ use Carbon\Carbon;
 class SiteController extends Controller
 {
     //get формы подтверждения
-    public function table_process(Request $request, $id, $teacher_id){
-        if(!$request->hasValidSignature()){
-            abort(403, "Время сеанса истекло");
+    public function table_process(Request $request, $target_id, $subject_id){
+        if(!($request->session()->pull('mun') == $target_id && $request->session()->pull('sub') == $subject_id)){
+            abort(403, "В доступе отказано");
         }
-        $data = Http::get("http://127.0.0.1:8001/api/show_students/{$id}");
+        /*$data = Http::get("http://127.0.0.1:8001/api/show_students/{$id}");
         $data = json_decode($data, true);
         $number = count($data['data']);
         $countries = $data['countries'];
         return view('welcome')->with('record', $data)->with('number', $number)->with('id_t', $id)->with('teacher_id',$teacher_id)
-                              ->with('countries',$countries)->with('num_count',count($countries));
+                              ->with('countries',$countries)->with('num_count',count($countries));*/
+
+        return view('welcome');
     }
     //Post формы подтверждения
     public function registerPost(Request $request, $id, $teacher_id){
@@ -70,6 +72,7 @@ class SiteController extends Controller
         }
         return redirect(route('main'));
     }
+
     public function main(){
         return view('main');
     }
@@ -77,15 +80,17 @@ class SiteController extends Controller
 
     //POST формы регистрации учителя
     public function giveurl(Request $request){
-        $teacher = teacher::create([
+        /*$teacher = teacher::create([
             'name' => $request->phone_number,
             'surname' => $request->email,
             'patronymic' => Hash::make($request->password),
             'position' => 2,
             'url_id' => 2,
         ]);
-        $url = URL::temporarySignedRoute('table.process', now()->addSeconds(1000), ['id' => $id_school, 'teacher_id' => $teacher_id]);
-        return Redirect::to($url);
+        $url = URL::temporarySignedRoute('table.process', now()->addSeconds(1000), ['id' => $id_school, 'teacher_id' => $teacher_id]);*/
+
+
+        return \redirect()->route('table.process', ['target_id' => 1, 'subject_id' => 1]);
     }
 
 
@@ -97,6 +102,9 @@ class SiteController extends Controller
 
         $schools = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-schools/1")->body());
         $municipalities = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-municipalities/1")->body());
+
+        $request->session()->put('mun', $request->mun);
+        $request->session()->put('sub', $request->sub);
 
         return view('giveurl', ['schools' => $schools, 'municipalities' => $municipalities]);
     }

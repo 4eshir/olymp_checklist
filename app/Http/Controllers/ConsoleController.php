@@ -16,45 +16,25 @@ class ConsoleController extends BaseController
 
     public function generateUrl($municipality_id, $subject_id)
     {
-        $url = URL::temporarySignedRoute('giveurl_get', now()->addSeconds(1000));
+        $url = URL::temporarySignedRoute('giveurl_get', now()->addSeconds(1000), ['mun' => $municipality_id, 'sub' => $subject_id]);
         return $url;
     }
 
     public function createArrUrlsMun($municipality_id)
     {
-        //$tUrl = $this->generateUrl($municipality_id, 1);
-        $dbUrl = dbUrl::create([
-            'raw' => $tUrl,
-            'municipality_id' => $municipality_id,
-            'subject_id' => 1,
-        ]);
-
-        //$tUrl = $this->generateUrl($municipality_id, 2);
-        $dbUrl = dbUrl::create([
-            'raw' => $tUrl,
-            'municipality_id' => $municipality_id,
-            'subject_id' => 2,
-        ]);
-
-        //$tUrl = $this->generateUrl($municipality_id, 3);
-        $dbUrl = dbUrl::create([
-            'raw' => $tUrl,
-            'municipality_id' => $municipality_id,
-            'subject_id' => 3,
-        ]);
-
-        /*for ($i = 1; $i < 25; $i++)
+        $urls = [];
+        for ($i = 1; $i < 25; $i++)
         {
             $tUrl = $this->generateUrl($municipality_id, $i);
-
-            $dbUrl = dbUrl::create([
+            $urls[] = $tUrl;
+            /*$dbUrl = dbUrl::create([
                 'raw' => $tUrl,
                 'municipality_id' => $municipality_id,
                 'subject_id' => $i,
-            ]);
-        }*/
+            ]);*/
+        }
 
-        return 'boobs';
+        return $urls;
     }
 
     public function createArrUrlsJuri($school_id)
