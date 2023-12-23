@@ -94,7 +94,23 @@ class SiteController extends Controller
             'url_id' => $url->id,
         ]);
 
-        return redirect()->route('table.process', ['target_id' => $request->mun, 'subject_id' => $request->sub]);
+        $parsedUrl = parse_url($request->header('Referer'));    // получаем ссылку откуда пришел запрос
+        $query = isset($parsedUrl['query']) ? $parsedUrl['query'] : null;   // получаем сам запрос
+
+        // разбиваем на параметры
+        $queryParams = [];
+        if ($query) {
+            $queryParts = explode('&', $query);
+            foreach ($queryParts as $part) {
+                list($key, $value) = explode('=', $part);
+                $queryParams[$key] = $value;
+            }
+        }
+
+        $munValue = $queryParams['mun'] ?? null;    // вытягиваем муниципалитет
+        $subjectValue = $queryParams['sub'] ?? null;    // и предмет
+
+        return \redirect()->route('table.process', ['target_id' => $munValue, 'subject_id' => $subjectValue]);
     }
 
 
