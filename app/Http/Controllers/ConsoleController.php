@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Ramsey\Uuid\Type\Integer;
 
@@ -14,31 +15,46 @@ class ConsoleController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function generateUrl($municipality_id, $subject_id)
+    public function generateUrl($municipality_id, $subject_id, $school_id = null)
     {
-        $url = URL::temporarySignedRoute('giveurl_get', now()->addSeconds(1000), ['mun' => $municipality_id, 'sub' => $subject_id]);
+        $url = URL::temporarySignedRoute('giveurl_get', now()->addSeconds(1000), ['mun' => $municipality_id, 'sch' => $school_id,'sub' => $subject_id]);
         return $url;
     }
 
     public function createArrUrlsMun($municipality_id)
     {
         $urls = [];
+
         for ($i = 1; $i < 25; $i++)
         {
-            $tUrl = $this->generateUrl($municipality_id, $i);
+            if ($municipality_id < 14)
+            {
+                $tUrl = $this->generateUrl($municipality_id, $i);
 
-            $record = new dbUrl();
-            $record->raw = $tUrl;
-            $record->municipality_id = $municipality_id;
-            $record->subject_id = $i;
-            $record->save();
+                $dbUrl = dbUrl::create([
+                    'raw' => $tUrl,
+                    'municipality_id' => $municipality_id,
+                    'subject_id' => $i,
+                ]);
+            }
+            else
+            {
+                $schools = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-schools/1/".$municipality_id)->body());
+                dd($schools);
+
+                for ($key = 0; $key < count($schools); $key++)
+                {
+                    $tUrl = $this->generateUrl($municipality_id,$i, $schools[$key]);
+
+                    $dbUrl = dbUrl::create([
+                        'raw' => $tUrl,
+                        'school_id' => $schools[$key],
+                        'subject_id' => $i,
+                    ]);
+                }
+            }
 
             $urls[] = $tUrl;
-            /*$dbUrl = dbUrl::create([
-                'raw' => $tUrl,
-                'municipality_id' => $municipality_id,
-                'subject_id' => $i,
-            ]);*/
         }
 
         return $urls;
@@ -50,11 +66,11 @@ class ConsoleController extends BaseController
         {
             $tUrl = $this->generateUrl($school_id, $i);
 
-            $record = new dbUrl();
+            /*$record = new dbUrl();
             $record->raw = $tUrl;
             $record->school_id = $school_id;
             $record->subject_id = $i;
-            $record->save();
+            $record->save();*/
 
             $dbUrl = dbUrl::create([
                 'raw' => $tUrl,
