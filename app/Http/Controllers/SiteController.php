@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\dbUrl;
 use App\Models\teacher;
 use App\Models\User;
 use App\Models\work\EducationalInstitutionWork;
@@ -80,17 +81,20 @@ class SiteController extends Controller
 
     //POST формы регистрации учителя
     public function giveurl(Request $request){
-        /*$teacher = teacher::create([
-            'name' => $request->phone_number,
-            'surname' => $request->email,
-            'patronymic' => Hash::make($request->password),
-            'position' => 2,
-            'url_id' => 2,
+
+        if ($request->mun !== 14) $url = dbUrl::where('municipality_id', $request->mun)->where('subject_id', $request->sub)->first();
+        else $url = dbUrl::where('school_id', $request->mun)->where('subject_id', $request->sub)->first();
+
+        $teacher = teacher::create([
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'patronymic' => $request->patronymic,
+            'school' => $request->educational,
+            'position' => $request->position,
+            'url_id' => $url->id,
         ]);
-        $url = URL::temporarySignedRoute('table.process', now()->addSeconds(1000), ['id' => $id_school, 'teacher_id' => $teacher_id]);*/
 
-
-        return \redirect()->route('table.process', ['target_id' => 1, 'subject_id' => 1]);
+        return redirect()->route('table.process', ['target_id' => $request->mun, 'subject_id' => $request->sub]);
     }
 
 
