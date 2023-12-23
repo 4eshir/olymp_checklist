@@ -26,6 +26,13 @@ class ConsoleController extends BaseController
         for ($i = 1; $i < 25; $i++)
         {
             $tUrl = $this->generateUrl($municipality_id, $i);
+
+            $record = new dbUrl();
+            $record->raw = $tUrl;
+            $record->municipality_id = $municipality_id;
+            $record->subject_id = $i;
+            $record->save();
+
             $urls[] = $tUrl;
             /*$dbUrl = dbUrl::create([
                 'raw' => $tUrl,
@@ -42,6 +49,12 @@ class ConsoleController extends BaseController
         for ($i = 1; $i < 25; $i++)
         {
             $tUrl = $this->generateUrl($school_id, $i);
+
+            $record = new dbUrl();
+            $record->raw = $tUrl;
+            $record->school_id = $school_id;
+            $record->subject_id = $i;
+            $record->save();
 
             $dbUrl = dbUrl::create([
                 'raw' => $tUrl,
