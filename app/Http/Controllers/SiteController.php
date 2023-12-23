@@ -82,18 +82,6 @@ class SiteController extends Controller
     //POST формы регистрации учителя
     public function giveurl(Request $request){
 
-        if ($request->mun !== 14) $url = dbUrl::where('municipality_id', $request->mun)->where('subject_id', $request->sub)->first();
-        else $url = dbUrl::where('school_id', $request->mun)->where('subject_id', $request->sub)->first();
-
-        $teacher = teacher::create([
-            'name' => $request->name,
-            'surname' => $request->surname,
-            'patronymic' => $request->patronymic,
-            'school' => $request->educational,
-            'position' => $request->position,
-            'url_id' => $url->id,
-        ]);
-
         $parsedUrl = parse_url($request->header('Referer'));    // получаем ссылку откуда пришел запрос
         $query = isset($parsedUrl['query']) ? $parsedUrl['query'] : null;   // получаем сам запрос
 
@@ -109,6 +97,21 @@ class SiteController extends Controller
 
         $munValue = $queryParams['mun'] ?? null;    // вытягиваем муниципалитет
         $subjectValue = $queryParams['sub'] ?? null;    // и предмет
+
+
+        if ($munValue !== 14) $url = dbUrl::where('municipality_id', $munValue)->where('subject_id', $subjectValue)->first();
+        else $url = dbUrl::where('school_id', $munValue)->where('subject_id', $subjectValue)->first();
+
+        $teacher = teacher::create([
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'patronymic' => $request->patronymic,
+            'school' => $request->educational,
+            'position' => $request->position,
+            'url_id' => $url->id,
+        ]);
+
+
 
         return \redirect()->route('table.process', ['target_id' => $munValue, 'subject_id' => $subjectValue]);
     }

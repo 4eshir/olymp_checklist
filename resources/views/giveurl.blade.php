@@ -105,21 +105,6 @@
                             value=""
                     />
 
-                    <input
-                            name="mun"
-                            type="hidden"
-                            class="form-control"
-                            id="munInput"
-                            value="{{ session('mun') }}"
-                    />
-
-                    <input
-                            name="sub"
-                            type="hidden"
-                            class="form-control"
-                            id="subInput"
-                            value="{{ session('sub') }}"
-                    />
                 </div>
 
             </div>
