@@ -39,8 +39,7 @@ class ConsoleController extends BaseController
             }
             else
             {
-                $schools = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-schools/1/".$municipality_id)->body());
-                dd($schools);
+                $schools = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-schools/1//".$municipality_id)->body());
 
                 for ($key = 0; $key < count($schools); $key++)
                 {

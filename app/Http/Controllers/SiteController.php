@@ -137,7 +137,7 @@ class SiteController extends Controller
     {
         if($request->has('municipality_id')){
 
-            $educational = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-schools/1/".$request->municipality_id)->body());
+            $educational = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-schools/1/null/".$request->municipality_id)->body());
 
             return ['success' => true, 'data' => $educational];
         }
