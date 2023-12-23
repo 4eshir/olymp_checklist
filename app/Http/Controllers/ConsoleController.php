@@ -39,16 +39,16 @@ class ConsoleController extends BaseController
             }
             else
             {
-                $schools = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-schools/1/".$municipality_id)->body());
-                dd($schools);
+                $schools = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-schools-juri/1/".$municipality_id)->body());
+                $schoolsId = $schools->id;
 
-                for ($key = 0; $key < count($schools); $key++)
+                for ($key = 0; $key < count($schoolsId); $key++)
                 {
-                    $tUrl = $this->generateUrl($municipality_id,$i, $schools[$key]);
+                    $tUrl = $this->generateUrl($municipality_id, $i, $schoolsId[$key]);
 
                     $dbUrl = dbUrl::create([
                         'raw' => $tUrl,
-                        'school_id' => $schools[$key],
+                        'school_id' => $schoolsId[$key],
                         'subject_id' => $i,
                     ]);
                 }
