@@ -20,7 +20,7 @@ use App\Http\Controllers\SiteController;
 Route::get('/main',  [SiteController::class, 'main'])->name('main');
 
 Route::get('/id/{target_id}/{subject_id}',  [SiteController::class, 'table_process'])->name('table.process');
-Route::post('/id/{id}/{teacher_id}',[SiteController::class ,'registerPost']) -> name('register.post');
+Route::post('/id',[SiteController::class ,'registerPost']) -> name('register.post');
 
 Route::get('/giveurl',  [SiteController::class, 'giveurl_get'])->name('giveurl_get');
 Route::post('/giveurl',[SiteController::class ,'giveurl']) -> name('giveurl');

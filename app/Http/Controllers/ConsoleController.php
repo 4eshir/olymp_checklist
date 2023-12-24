@@ -17,7 +17,7 @@ class ConsoleController extends BaseController
 
     public function generateUrl($municipality_id, $subject_id, $school_id = null)
     {
-        $url = URL::temporarySignedRoute('giveurl_get', now()->addSeconds(1000), ['mun' => $municipality_id, 'sch' => $school_id,'sub' => $subject_id]);
+        $url = URL::temporarySignedRoute('giveurl_get', now()->addSeconds(604800), ['mun' => $municipality_id, 'sch' => $school_id,'sub' => $subject_id]);
         return $url;
     }
 

@@ -9,9 +9,9 @@
 </head>
 <body>
 @csrf
-    <div align="center">Главная страница</div>
+    <div align="center">Подтверждение заявок успешно завершено</div>
     <div class="data-profile">
-        <h1 align = "center"> Главная страница</h1>
+        <h1 align = "center">Тут что-то про скачать и т д</h1>
     </div>
 </body>
 </html>

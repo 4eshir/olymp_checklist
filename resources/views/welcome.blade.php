@@ -21,7 +21,8 @@
     <h3 class = "text-1"> </br>Астраханская</br>область</h3>
 </div>
 <div class="container box-1" id = "table-1">
-    <form>
+    <form method="POST" action="{{ route('register.post') }}">
+        @csrf
         <h2>Название_Предмета Дата</h2>
         <table class="table table-bordered" id="myTable">
             <thead class="thead-dark">
@@ -32,6 +33,7 @@
                 <th scope="col">Дата рождения</th>
                 <th scope="col">Класс участия</th>
                 <th scope="col">Учебное учреждение</th>
+                <th scope="col">Обоснование участия</th>
                 <th scope="col">Гражданство</th>
                 <th scope="col">ОВЗ</th>
                 <th scope="col">Статус участника</th>
@@ -39,58 +41,52 @@
             </thead>
             <tbody>
 
+            @foreach($data->data as $one)
+                <input type="hidden" name="ids[]" value="{{ $one->id }}"/>
+                <tr>
+                    <td>{{ $one->name }}</td>
+                    <td>{{ $one->surname }}</td>
+                    <td>{{ $one->patronymic }}</td>
+                    <td>{{ $one->birthdate }}</td>
+                    <td>{{ $one->class }}</td>
+                    <td>{{ $one->educational }}</td>
+                    <td>{{ $one->warrant }}</td>
+                    <td>
+                        <select name="citizenship[]">
+                            <option value = "0">РФ</option>
+                            <option value = "1">Резидент</option>
+                            <option value = "2">Иностранное государство</option>
+                        </select>
+                    </td>
 
-            <tr>
-                <td>Иванов</td>
-                <td>Иван</td>
-                <td>Иванович</td>
-                <td>01.01.2010</td>
-                <td>9 класс</td>
-                <td>Государственное бюджетное общеобразовательное учреждение Астраханской области "Вечерняя (сменная) общеобразовательная школа № 10"</td>
-                <td><input type="text" style="width:70%" id = "1111" list="countryList"></div>
-<datalist id="countryList">
-    <option value = "0">РФ</option>
-    <option value = "1">Резидент</option>
-    <option value = "2">Иностранное государство</option>
-</datalist>
-</td>
+                    <td>
+                        <select name="disabled[]">
+                            <option value="0">Без ОВЗ</option>
+                            <option value="1">Имеется ОВЗ</option>
+                        </select>
+                    </td>
 
-<td><input type="checkbox" class="form-check-input" checked><label>ОВЗ</label></td>
+                    <td>
+                        <select name="status[]">
+                            <option value="0">Отклонить заявку</option>
+                            <option value="1">Подвердить заявку</option>
+                        </select>
+                    </td>
 
-<td><input type="checkbox" class="form-check-input" checked><label>Подтвердить участие</label></td>
 
-</tr>
+                </tr>
+            @endforeach
 
-<tr>
-    <td>Петров</td>
-    <td>Петр</td>
-    <td>Петрович</td>
-    <td>01.01.2011</td>
-    <td>10 класс</td>
-    <td>Муниципальное бюджетное общеобразовательное учреждение г. Астрахани "Средняя общеобразовательная школа №32 с углубленным изучением предметов физико-математического профиля"</td>
-    <td><input type="text" style="width:70%" id = "1111" list="countryList"></div>
-        <datalist id="countryList">
-            <option value = "0">РФ</option>
-            <option value = "1">Резидент</option>
-            <option value = "2">Иностранное государство</option>
-        </datalist>
-    </td>
 
-    <td><input type="checkbox" class="form-check-input" checked><label>ОВЗ</label></td>
-
-    <td><input type="checkbox" class="form-check-input" checked><label>Подтвердить участие</label></td>
-
-</tr>
-
-</tbody>
-</table>
-<script src = "../../js/checkbox.js">
-</script>
-<button type="button submit" class="btn btn-primary button-1" id = "button-1">
-    <script src="../../js/empty.js"></script>
-    Подтвердить участие
-</button>
-</form>
+            </tbody>
+            </table>
+            <script src = "../../js/checkbox.js">
+            </script>
+            <input type="submit" class="btn btn-primary button-1" id = "button-1">
+                <script src="../../js/empty.js"></script>
+                Подтвердить участие
+            </input>
+        </form>
 </div>
 <div class="container box-1" id = "div-1">Ваше участие подтверждено</div>
 </div>
