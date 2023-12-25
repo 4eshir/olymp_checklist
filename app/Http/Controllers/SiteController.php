@@ -232,6 +232,7 @@ class SiteController extends Controller
         }*/
 
         $schools = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-schools/1")->body());
+        dd(getenv('STUDENT_URL')."/api/get-schools/1", $schools);
         $municipalities = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-municipalities/1")->body());
 
 
