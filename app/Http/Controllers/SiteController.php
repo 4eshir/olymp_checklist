@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 class SiteController extends Controller
 {
     //get формы подтверждения
@@ -32,6 +34,8 @@ class SiteController extends Controller
 
         $data = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-entries/1/".$target_id."/".$subject_id)->body());
         $subject = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-subject/1/".$subject_id)->body())->name;
+
+        $request->session()->put('children',$data);
 
         return view('welcome', ['data' => $data, 'subject' => $subject]);
     }
@@ -76,6 +80,14 @@ class SiteController extends Controller
             $number = $number + 3;
         }*/
 
+        $excelExport = [
+            ['ФИО', 'Дата рождения', 'Класс участия', 'Учебное учреждение', 'Обоснование участия', 'Гражданство', 'ОВЗ', 'Статус участника'],
+        ];
+        $children = $request->session()->get('children')->data;
+        $citizenship = ['РФ', 'Резидент', 'Иностранное государство'];
+        $disabled = ['Без ОВЗ', 'Имеется ОВЗ'];
+        $status = ['Заявка отклонена', 'Заявка подтверждена'];
+
         $data = [];
         for ($i = 0; $i < count($_POST["ids"]); $i++)
         {
@@ -89,6 +101,17 @@ class SiteController extends Controller
                 'status' => $_POST["status"][$i],
             ]);
 
+            $excelExport[] = [
+                $children[$i]->name.' '.$children[$i]->surname.' '.$children[$i]->patronymic,
+                date('d.m.Y',strtotime($children[$i]->birthdate)),
+                $children[$i]->class,
+                $children[$i]->educational,
+                $children[$i]->warrant,
+                $citizenship[$_POST["citizenship"][$i]],
+                $disabled[$_POST["disabled"][$i]],
+                $status[$_POST["status"][$i]]
+            ];
+
         }
 
 
@@ -97,6 +120,13 @@ class SiteController extends Controller
         ]);
 
         dbUrl::where('id', $request->session()->pull('url_id'))->update(['state' => 0]);
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->fromArray($excelExport, null, 'A1');
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('test.xlsx');
 
         return redirect(route('main'));
     }
