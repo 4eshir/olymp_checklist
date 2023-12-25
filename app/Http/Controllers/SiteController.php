@@ -119,16 +119,54 @@ class SiteController extends Controller
             'data' => $data
         ]);
 
-        dbUrl::where('id', $request->session()->pull('url_id'))->update(['state' => 0]);
+        dbUrl::where('id', $request->session()->get('url_id'))->update(['state' => 0]);
+
+        $url = dbUrl::where('id', $request->session()->get('url_id'))->first();
+        $subject = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-subject/1/".$url->subject_id)->body());
+        $municipalities = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-municipality/1/".$url->municipality_id)->body());
 
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->fromArray($excelExport, null, 'A1');
-
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('test.xlsx');
+        $writer->save(strval($request->session()->get('url_id')).'_'.$subject->name.'_'.$municipalities->name.'.xlsx');
 
         return redirect(route('main'));
+    }
+
+    public function findFilesByPattern($pattern, $directory = '.') {
+        $files = glob($pattern, GLOB_BRACE);
+        $files = array_map(function ($file) use ($directory) {
+            return /*$directory . DIRECTORY_SEPARATOR . */$file;
+        }, $files);
+        return $files;
+    }
+
+    public function downloadExcel(Request $request){
+        $idUrl = $request->session()->get('url_id');
+        if ($idUrl == null) $idUrl = dbUrl::where('raw', strval($request->header('Referer')))->first()->id;
+
+        $filepattern = sprintf('%s*.xlsx', $idUrl);
+        $files = $this->findFilesByPattern($filepattern);
+
+        foreach ($files as $file)
+        {
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="'.$file.'"');
+            header('Cache-Control: max-age=3600');
+            header('Cache-Control: max-age=3600');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Expires: ' . gmdate('r', time() + 3600));
+            readfile($file);
+
+            // Удалить файл после скачивания
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
+
+        exit;
     }
 
     public function main(){

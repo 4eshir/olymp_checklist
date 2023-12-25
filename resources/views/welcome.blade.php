@@ -102,9 +102,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/RegistrationForm.css">
-    <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="/css/welcome.css">
+    <link rel="stylesheet" href="../../css/RegistrationForm.css">
+    <link rel="stylesheet" href="../../css/index.css">
+    <link rel="stylesheet" href="../../css/welcome.css">
 
     <link rel="shortcut icon" href="/img/flag.png" type="image/png">
 
@@ -115,8 +115,8 @@
 </head>
 <body class = "body-1" id = "highlight2">
 <header >
-    <img src="/img/logo_goriz_color.svg" alt="">
-    <img src="/img/Frame 9191.svg" alt="">
+    <img src="../../img/logo_goriz_color.svg" alt="">
+    <img src="../../img/Frame 9191.svg" alt="">
 </header>
 <div class="container box-1" id = "table-1">
     <form method="POST" action="{{ route('register.post') }}">
