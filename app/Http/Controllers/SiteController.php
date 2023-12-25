@@ -74,14 +74,14 @@ class SiteController extends Controller
             }
             $number = $number + 3;
         }*/
-dd($request);
+
         $data = [];
         for ($i = 0; $i < count($_POST["ids"]); $i++)
         {
             $data[] = [$_POST["ids"][$i], $_POST["citizenship"][$i], $_POST["disabled"][$i], $_POST["status"][$i]];
 
             $student = students::create([
-                //'teacher_id' => ,
+                'teacher_id' => $request->session()->get('teacher_id'),
                 'olympiad_entry_id' => $_POST["ids"][$i],
                 'citizenship_id' => $_POST["citizenship"][$i],
                 'ovz' => $_POST["disabled"][$i],
