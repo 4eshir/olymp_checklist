@@ -11,9 +11,11 @@ class students extends Model
     protected $fillable = 
     [ 
         'name',
-        'id_teacher',
-        'surname',
-        'flag',
-        'email'
+        'teacher_id',
+        'olympiad_entry_id',
+        'citizenship_id',
+        'ovz',
+        'status',
+        'save_at',
     ];
 }
