@@ -31,8 +31,9 @@ class SiteController extends Controller
                               ->with('countries',$countries)->with('num_count',count($countries));*/
 
         $data = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-entries/1/".$target_id."/".$subject_id)->body());
+        $subject = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-subject/1/".$subject_id)->body())->name;
 
-        return view('welcome', ['data' => $data, '']);
+        return view('welcome', ['data' => $data, 'subject' => $subject]);
     }
     //Post формы подтверждения
     public function registerPost(Request $request){
