@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class students extends Model
 {
     use HasFactory;
+    //public $timestamps = false;
     protected $fillable = 
     [ 
         'name',
@@ -16,6 +17,7 @@ class students extends Model
         'citizenship_id',
         'ovz',
         'status',
-        'save_at',
+        'created_at',
+        'updated_at',
     ];
 }
