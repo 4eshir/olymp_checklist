@@ -74,7 +74,7 @@ class SiteController extends Controller
             }
             $number = $number + 3;
         }*/
-
+dd($request);
         $data = [];
         for ($i = 0; $i < count($_POST["ids"]); $i++)
         {
@@ -128,8 +128,8 @@ class SiteController extends Controller
         if ($munValue !== 14) $url = dbUrl::where('municipality_id', $munValue)->where('subject_id', $subjectValue)->first();
         else $url = dbUrl::where('school_id', $munValue)->where('subject_id', $subjectValue)->first();
 
-        $duplicateTeacher = teacher::where('name', $request->name)->where('surname', $request->surname)->where('patronymic', $request->patronymic)->where('school', $request->educational)->first();
-        if (!$duplicateTeacher)
+        $teacher = teacher::where('name', $request->name)->where('surname', $request->surname)->where('patronymic', $request->patronymic)->where('school', $request->educational)->first();
+        if (!$teacher)
         {
             $teacher = teacher::create([
                 'name' => $request->name,
@@ -143,6 +143,7 @@ class SiteController extends Controller
 
 
         $request->session()->put('url_id', $url->id);
+        $request->session()->put('teacher_id', $teacher->id);
 
         return \redirect()->route('table.process', ['target_id' => $munValue, 'subject_id' => $subjectValue]);
     }
