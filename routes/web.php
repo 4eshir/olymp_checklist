@@ -41,3 +41,5 @@ Route::get('/gen-url/{id}', function($id){
 
 Route::get('/gen/{municipality_id}',  [\App\Http\Controllers\ConsoleController::class, 'createArrUrlsMun'])->name('gen');
 Route::get('/gen-p/{school_id}',  [\App\Http\Controllers\ConsoleController::class, 'createArrUrlsJuri'])->name('genP');
+
+Route::post('/download-excel', [SiteController::class, 'downloadExcel'])->name('downloadExcel');
