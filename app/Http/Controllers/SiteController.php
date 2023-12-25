@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\dbUrl;
+use App\Models\students;
 use App\Models\teacher;
 use App\Models\User;
 use App\Models\work\EducationalInstitutionWork;
@@ -76,7 +77,19 @@ class SiteController extends Controller
 
         $data = [];
         for ($i = 0; $i < count($_POST["ids"]); $i++)
+        {
             $data[] = [$_POST["ids"][$i], $_POST["citizenship"][$i], $_POST["disabled"][$i], $_POST["status"][$i]];
+
+            $student = students::create([
+                //'teacher_id' => ,
+                'olympiad_entry_id' => $_POST["ids"][$i],
+                'citizenship_id' => $_POST["citizenship"][$i],
+                'ovz' => $_POST["disabled"][$i],
+                'status' => $_POST["status"][$i],
+            ]);
+
+        }
+
 
         $res = Http::post(getenv('STUDENT_URL')."/api/check-students", [
             'data' => $data
