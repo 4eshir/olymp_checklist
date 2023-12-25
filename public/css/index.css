@@ -7,3 +7,23 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+.verification_info{
+  background-color: rgba(255, 255, 0, 0.3);
+  border: 1px solid #ffc000;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.verification_danger{
+  background-color: rgba(255, 0, 0, 0.2);
+  border: 1px solid #ff0000;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.verification_text{
+  font-size: 13pt;
+}

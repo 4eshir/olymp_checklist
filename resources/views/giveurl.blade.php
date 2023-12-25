@@ -48,7 +48,10 @@
 
 <div class='profile'>
 
+
+
     <div class='section animate__animated animate__fadeIn'>
+
         <div class='title'>
             <h4>Введите Ваши данные</h4>
         </div>
@@ -107,6 +110,12 @@
 
                 </div>
 
+            </div>
+
+            <div class='verification_info'>
+                <p class="verification_text" style="margin-bottom: 0">
+                    Проверьте корректность введенных данных перед тем, как приступить к подтверждению заявок!
+                </p>
             </div>
 
             <div class='btnline'>
