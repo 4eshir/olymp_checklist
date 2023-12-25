@@ -19,7 +19,7 @@ class SiteController extends Controller
 {
     //get формы подтверждения
     public function table_process(Request $request, $target_id, $subject_id){
-        if(!($request->session()->pull('mun') == $target_id && $request->session()->pull('sub') == $subject_id)){
+        if(!($request->session()->get('mun') == $target_id && $request->session()->get('sub') == $subject_id)){
             abort(403, "В доступе отказано");
         }
         /*$data = Http::get("http://127.0.0.1:8001/api/show_students/{$id}");

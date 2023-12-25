@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
+.body-1 {
+  gap: 64px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  header {
+    display: none;
+  }
+}
+
+.form-select {
+  border-radius: 8px;
+  /*background: #F9F9F9;*/
+  border: 1px solid black;
+  padding: 8px 12px;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  color: #383C3F;
+}
+
+.form-select:focus {
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: #F9F9F9;
+  border: 1px solid #42A8E1;
+  box-shadow: 0px 0px 0px 5px rgba(32, 146, 209, 0.3);
+}
+
+.form-select::-moz-placeholder {
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: #C0C0C0;
+}
+
+.form-select::placeholder {
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: #C0C0C0;
+}
+
+.box-1 {
+  min-width: 768px;
+}
+.box-1 form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow: hidden;
+}
+@media (max-width: 1024px) {
+  .box-1 form .table {
+    display: block;
+    overflow: hidden;
+    overflow-x: scroll;
+  }
+}
+@media (max-width: 600px) {
+  .box-1 {
+    display: none;
+  }
+}
+
+.table-bordered {
+  font-family: Inter;
+  font-size: 14px;
+}
+.table-bordered td {
+  text-align: left;
+}
+@media (max-width: 600px) {
+  .table-bordered {
+    display: none;
+  }
+}
+
+#div-1 {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 12px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #1197D5;
+  background: rgba(32, 146, 209, 0.11);
+  color: var(--Group_3, #2092D1);
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+}
+@media (max-width: 600px) {
+  #div-1 {
+    display: none;
+  }
+}
+
+.text-mobile {
+  display: none;
+}
+@media (max-width: 600px) {
+  .text-mobile {
+    display: block;
+  }
+}/*# sourceMappingURL=welcome.css.map */
