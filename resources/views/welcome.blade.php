@@ -119,9 +119,11 @@
     <img src="/img/Frame 9191.svg" alt="">
 </header>
 <div class="container box-1" id = "table-1">
-    <form>
+    <form method="POST" action="{{ route('register.post') }}">
+        @csrf
         <h2>Название_Предмета Дата</h2>
         <table class="table table-bordered" id="myTable">
+
             <thead class="thead-dark">
             <tr>
                 <th scope="col" style="width: 20%; text-align: center; vertical-align: middle">ФИО</th>
@@ -135,66 +137,44 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Иванов Иван Иванович</td>
-                <td>01.01.2010</td>
-                <td>9 класс</td>
-                <td>Государственное бюджетное общеобразовательное учреждение Астраханской области "Вечерняя (сменная) общеобразовательная школа № 10"</td>
-                <td>ПОТОМУ ЧТО</td>
-                <td>
-                    <select class="form-select">
-                        <option selected>РФ</option>
-                        <option value="1">Резидент</option>
-                        <option value="2">Иностранное государство</option>
-                    </select>
-                </td>
+            @foreach($data->data as $one)
+                <input type="hidden" name="ids[]" value="{{ $one->id }}"/>
+                <tr>
+                    <td>{{ $one->name }}</td>
+                    <td>{{ $one->surname }}</td>
+                    <td>{{ $one->patronymic }}</td>
+                    <td>{{ $one->birthdate }}</td>
+                    <td>{{ $one->class }}</td>
+                    <td>{{ $one->educational }}</td>
+                    <td>{{ $one->warrant }}</td>
+                    <td>
+                        <select name="citizenship[]">
+                            <option value = "0">РФ</option>
+                            <option value = "1">Резидент</option>
+                            <option value = "2">Иностранное государство</option>
+                        </select>
+                    </td>
 
-                <td>
-                    <select class="form-select">
-                        <option value="1">Без ОВЗ</option>
-                        <option value="2">Имеются ОВЗ</option>
-                    </select>
-                </td>
+                    <td>
+                        <select name="disabled[]">
+                            <option value="0">Без ОВЗ</option>
+                            <option value="1">Имеется ОВЗ</option>
+                        </select>
+                    </td>
 
-                <td>
-                    <select class="form-select">
-                        <option value="1">Отклонить</option>
-                        <option value="2">Одобрить</option>
-                    </select>
-                </td>
+                    <td>
+                        <select name="status[]">
+                            <option value="0">Отклонить заявку</option>
+                            <option value="1">Подтвердить заявку</option>
+                        </select>
+                    </td>
 
-            </tr>
-            <tr>
-                <td>Петров Петр Петрович</td>
-                <td>01.01.2011</td>
-                <td>10 класс</td>
-                <td>Муниципальное бюджетное общеобразовательное учреждение г. Астрахани "Средняя общеобразовательная школа №32 с углубленным изучением предметов физико-математического профиля"</td>
-                <td>ПОТОМУ ЧТО</td>
-                <td>
-                    <select class="form-select">
-                        <option selected>РФ</option>
-                        <option value="1">Резидент</option>
-                        <option value="2">Иностранное государство</option>
-                    </select>
-                </td>
 
-                <td>
-                    <select class="form-select">
-                        <option value="1">Без ОВЗ</option>
-                        <option value="2">Имеются ОВЗ</option>
-                    </select>
-                </td>
-
-                <td>
-                    <select class="form-select">
-                        <option value="1">Отклонить</option>
-                        <option value="2">Одобрить</option>
-                    </select>
-                </td>
-            </tr>
+                </tr>
+            @endforeach
             </tbody>
         </table>
-        <button type="button submit" class="btn btn-primary button-1" id = "button-1">
+        <button type="submit" class="btn btn-primary button-1" id = "button-1">
             <script src="../../js/empty.js"></script>
             Подтвердить участие
         </button>

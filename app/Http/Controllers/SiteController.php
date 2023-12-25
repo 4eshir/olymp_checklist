@@ -32,7 +32,7 @@ class SiteController extends Controller
 
         $data = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-entries/1/".$target_id."/".$subject_id)->body());
 
-        return view('welcome', ['data' => $data]);
+        return view('welcome', ['data' => $data, '']);
     }
     //Post формы подтверждения
     public function registerPost(Request $request){
