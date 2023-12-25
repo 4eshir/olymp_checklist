@@ -160,7 +160,7 @@ class SiteController extends Controller
         $subjectValue = $queryParams['sub'] ?? null;    // и предмет
 
 
-        if ($munValue !== 14) $url = dbUrl::where('municipality_id', $munValue)->where('subject_id', $subjectValue)->first();
+        if ($munValue < 14) $url = dbUrl::where('municipality_id', $munValue)->where('subject_id', $subjectValue)->first();
         else $url = dbUrl::where('school_id', $munValue)->where('subject_id', $subjectValue)->first();
 
         $teacher = teacher::where('name', $request->name)->where('surname', $request->surname)->where('patronymic', $request->patronymic)->where('school', $request->educational)->first();
@@ -186,8 +186,8 @@ class SiteController extends Controller
 
     // GET формы регистрации учителя
     public function giveurl_get(Request $request){
-        if ($request->mun !== 14) $url = dbUrl::where('municipality_id', $request->mun)->where('subject_id', $request->sub)->first();
-        else $url = dbUrl::where('school_id', $request->mun)->where('subject_id', $request->sub)->first();
+        if (!$request->sch) $url = dbUrl::where('municipality_id', $request->mun)->where('subject_id', $request->sub)->first();
+        else $url = dbUrl::where('school_id', $request->sch)->where('subject_id', $request->sub)->first();
 
         if($url->state == 0){
             return view('main');
@@ -201,7 +201,7 @@ class SiteController extends Controller
         $municipalities = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-municipalities/1")->body());
 
 
-        $request->session()->put('mun', $request->mun);
+        $request->session()->put('mun', $request->mun !== -1 ? : $request->sch);
         $request->session()->put('sub', $request->sub);
 
         return view('giveurl', ['schools' => $schools, 'municipalities' => $municipalities]);
