@@ -44,6 +44,8 @@ class ConsoleController extends BaseController
 
     public function createArrUrlsJuri($school_id)
     {
+        $urls = [];
+
         for ($i = 1; $i < 25; $i++)
         {
             $tUrl = $this->generateUrl(-1, $i, $school_id);
@@ -59,6 +61,10 @@ class ConsoleController extends BaseController
                 'school_id' => $school_id,
                 'subject_id' => $i,
             ]);
+
+            $urls[] = $tUrl;
         }
+
+        return $urls;
     }
 }
