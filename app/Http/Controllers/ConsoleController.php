@@ -62,7 +62,7 @@ class ConsoleController extends BaseController
                 'subject_id' => $i,
             ]);
 
-            $urls[] = $tUrl;
+            $urls[] = stripcslashes($tUrl);
         }
 
         return $urls;
