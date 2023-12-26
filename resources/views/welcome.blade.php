@@ -119,6 +119,14 @@
     <img src="../../img/Frame 9191.svg" alt="">
 </header>
 <div class="container box-1" id = "table-1">
+
+    <div class='verification_info'>
+        <p class="verification_text" style="margin-bottom: 0">
+            Не закрывайте и не обновляйте данную страницу. Если это произойдет - следуйте инструкциями из Вашего электронного письма
+        </p>
+    </div>
+    <div style="margin-bottom: 40px;"></div>
+
     <form method="POST" action="{{ route('register.post') }}">
         @csrf
         <h2>{{ $subject }} 2023/2024</h2>
@@ -172,8 +180,15 @@
             @endforeach
             </tbody>
         </table>
+
+        <div class='verification_info'>
+            <p class="verification_text" style="margin-bottom: 0">
+                Проверьте корректность введенных данных перед сохранением! После этого изменить их не получится.
+            </p>
+        </div>
+
         <button type="submit" class="btn btn-primary button-1" id = "button-1">
-            Подтвердить участие
+            Сохранить данные по заявкам
         </button>
     </form>
 </div>
