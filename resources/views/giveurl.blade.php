@@ -170,14 +170,26 @@
 
                 $.get('{{url('dropdown-schools?municipality_id=')}}'+id)
                     .done(function(data){
-                        var s='<option value="">Выберите место работы</option>';
+                        if (id == 14)
+                        {
+                            var s='<option value="">Выберите место работы</option>';
 
-                        data["data"]["data"].forEach(function(row){
-                            s +='<option value="'+row[0]+'">'+row[1]+'</option>'
-                        });
-                        subcategory.removeAttr('disabled');
-                        subcategory.html(s);
-                        loader.hide();
+                            data["data"]["data"].forEach(function(row){
+                                s +='<option value="'+row[0]+'">'+row[1]+'</option>'
+                            });
+                            subcategory.removeAttr('disabled');
+                            subcategory.html(s);
+                            loader.hide();
+                        }
+                        else
+                        {
+                            var s='<option value="">Управление образованием</option>';
+
+                            subcategory.removeAttr('disabled');
+                            subcategory.html(s);
+                            loader.hide();
+                        }
+
                     })
             }
 
