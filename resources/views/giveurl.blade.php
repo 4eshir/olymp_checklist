@@ -170,7 +170,7 @@
 
                 $.get('{{url('dropdown-schools?municipality_id=')}}'+id)
                     .done(function(data){
-                        if (id == 14)
+                        if (id == 14 || id == 15)
                         {
                             var s='<option value="">Выберите место работы</option>';
 

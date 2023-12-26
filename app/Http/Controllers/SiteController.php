@@ -244,7 +244,7 @@ class SiteController extends Controller
     // Зависимый список школ
     public function dropdownSchools(Request $request)
     {
-        if($request->has('municipality_id') && $request->municipality_id == 14){
+        if($request->has('municipality_id') && ($request->municipality_id == 14 || $request->municipality_id == 15)){
 
             $educational = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-schools-juri/1/".$request->municipality_id)->body());
 
