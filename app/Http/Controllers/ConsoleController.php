@@ -50,19 +50,13 @@ class ConsoleController extends BaseController
         {
             $tUrl = $this->generateUrl(-1, $i, $school_id);
 
-            /*$record = new dbUrl();
-            $record->raw = $tUrl;
-            $record->school_id = $school_id;
-            $record->subject_id = $i;
-            $record->save();*/
-
             $dbUrl = dbUrl::create([
                 'raw' => $tUrl,
                 'school_id' => $school_id,
                 'subject_id' => $i,
             ]);
 
-            $urls[] = stripcslashes($tUrl);
+            $urls[] = $tUrl;
         }
 
         return $urls;
