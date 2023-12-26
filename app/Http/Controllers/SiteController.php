@@ -194,8 +194,11 @@ class SiteController extends Controller
         $subjectValue = $queryParams['sub'] ?? null;    // и предмет
 
 
+        if ($munValue == -1) $munValue = $queryParams['sch'];
+
         if ($munValue < 14) $url = dbUrl::where('municipality_id', $munValue)->where('subject_id', $subjectValue)->first();
         else $url = dbUrl::where('school_id', $munValue)->where('subject_id', $subjectValue)->first();
+
 
         $teacher = teacher::where('name', $request->name)->where('surname', $request->surname)->where('patronymic', $request->patronymic)->where('school', $request->educational)->first();
         if (!$teacher)
