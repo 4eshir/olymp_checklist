@@ -89,7 +89,7 @@ class SiteController extends Controller
         $status = ['Заявка отклонена', 'Заявка подтверждена'];
 
         $data = [];
-        if ($_POST["ids"])
+        if (!empty($_POST["ids"]))
         {
             for ($i = 0; $i < count($_POST["ids"]); $i++)
             {
