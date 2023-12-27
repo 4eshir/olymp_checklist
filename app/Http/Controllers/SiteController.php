@@ -89,47 +89,51 @@ class SiteController extends Controller
         $status = ['Заявка отклонена', 'Заявка подтверждена'];
 
         $data = [];
-        for ($i = 0; $i < count($_POST["ids"]); $i++)
+        if ($_POST["ids"])
         {
-            $data[] = [$_POST["ids"][$i], $_POST["citizenship"][$i], $_POST["disabled"][$i], $_POST["status"][$i]];
+            for ($i = 0; $i < count($_POST["ids"]); $i++)
+            {
+                $data[] = [$_POST["ids"][$i], $_POST["citizenship"][$i], $_POST["disabled"][$i], $_POST["status"][$i]];
 
-            $student = students::create([
-                'teacher_id' => $request->session()->get('teacher_id'),
-                'olympiad_entry_id' => $_POST["ids"][$i],
-                'citizenship_id' => $_POST["citizenship"][$i],
-                'ovz' => $_POST["disabled"][$i],
-                'status' => $_POST["status"][$i],
+                $student = students::create([
+                    'teacher_id' => $request->session()->get('teacher_id'),
+                    'olympiad_entry_id' => $_POST["ids"][$i],
+                    'citizenship_id' => $_POST["citizenship"][$i],
+                    'ovz' => $_POST["disabled"][$i],
+                    'status' => $_POST["status"][$i],
+                ]);
+
+                $excelExport[] = [
+                    $children[$i]->name.' '.$children[$i]->surname.' '.$children[$i]->patronymic,
+                    date('d.m.Y',strtotime($children[$i]->birthdate)),
+                    $children[$i]->class,
+                    $children[$i]->educational,
+                    $children[$i]->warrant,
+                    $citizenship[$_POST["citizenship"][$i]],
+                    $disabled[$_POST["disabled"][$i]],
+                    $status[$_POST["status"][$i]]
+                ];
+
+            }
+
+
+            $res = Http::post(getenv('STUDENT_URL')."/api/check-students", [
+                'data' => $data
             ]);
 
-            $excelExport[] = [
-                $children[$i]->name.' '.$children[$i]->surname.' '.$children[$i]->patronymic,
-                date('d.m.Y',strtotime($children[$i]->birthdate)),
-                $children[$i]->class,
-                $children[$i]->educational,
-                $children[$i]->warrant,
-                $citizenship[$_POST["citizenship"][$i]],
-                $disabled[$_POST["disabled"][$i]],
-                $status[$_POST["status"][$i]]
-            ];
+            dbUrl::where('id', $request->session()->get('url_id'))->update(['state' => 0]);
+
+            $url = dbUrl::where('id', $request->session()->get('url_id'))->first();
+            $subject = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-subject/1/".$url->subject_id)->body());
+            $municipalities = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-municipality/1/".$url->municipality_id)->body());
+
+            $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->fromArray($excelExport, null, 'A1');
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save(strval($request->session()->get('url_id')).'_'.$subject->name.'_'.$municipalities->name.'.xlsx');
 
         }
-
-
-        $res = Http::post(getenv('STUDENT_URL')."/api/check-students", [
-            'data' => $data
-        ]);
-
-        dbUrl::where('id', $request->session()->get('url_id'))->update(['state' => 0]);
-
-        $url = dbUrl::where('id', $request->session()->get('url_id'))->first();
-        $subject = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-subject/1/".$url->subject_id)->body());
-        $municipalities = json_decode(Http::get(getenv('STUDENT_URL')."/api/get-municipality/1/".$url->municipality_id)->body());
-
-        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->fromArray($excelExport, null, 'A1');
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save(strval($request->session()->get('url_id')).'_'.$subject->name.'_'.$municipalities->name.'.xlsx');
 
         return redirect(route('main'));
     }
