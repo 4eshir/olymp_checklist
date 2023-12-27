@@ -134,7 +134,7 @@ class SiteController extends Controller
         $sheet->fromArray($excelExport, null, 'A1');
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save(strval($request->session()->get('url_id')).'_'.$subject->name.'_'.$municipalities->name.'.xlsx');
-        
+
         return redirect(route('main'));
     }
 
@@ -229,6 +229,8 @@ class SiteController extends Controller
     public function giveurl_get(Request $request){
         if (!$request->sch) $url = dbUrl::where('municipality_id', $request->mun)->where('subject_id', $request->sub)->first();
         else $url = dbUrl::where('school_id', $request->sch)->where('subject_id', $request->sub)->first();
+
+        $request->session()->put('url_id', $url->id);
 
         if($url->state == 0){
             return view('main');
